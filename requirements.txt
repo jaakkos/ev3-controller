@@ -1,0 +1,7 @@
+flask
+flask-socketio
+brickpi3
+gevent
+goless
+nose
+sphinx

@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+
+nose = "*"
+sphinx = "*"
+
+[packages]
+
+flask = "==0.12.2"
+"flask-socketio" = "==2.9.2"
+goless = "==0.7.2"
+gevent = "==1.2.2"
+"gevent-websocket" = "==0.10.1"
