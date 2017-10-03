@@ -6,25 +6,31 @@ if platform == "linux" or platform == "linux2":
 
 def start_touch_sensor(brick, port, channel):
   print("start touch sensor")
+  brick.reset_all()
+  time.sleep(0.25)
+  setup_sensor(brick, port)
   goless.go(run_touch_sensor, brick, port, channel)
   print("touch sensor started")
 
-def run_touch_sensor(brick, port, channel):
+def setup_sensor(brick, port):
   brick.set_sensor_type(port, brick.SENSOR_TYPE.TOUCH)
-  time.sleep(0.1)
+  error = True
+  while error:
+    time.sleep(0.1)
+    try:
+      brick.get_sensor(port)
+      error = False
+    except brickpi3.SensorError as error:
+      error = True
 
+def run_touch_sensor(brick, port, channel):
   while True:
     try:
       sensor_value = brick.get_sensor(port)
-      print(sensor_value)
-      if sensor_value:
-        channel.send(('touch', sensor_value))
-
+      time.sleep(0.01)
+      channel.send(sensor_value)
     except brickpi3.SensorError as error:
-      print(error)
-
-    print("looop")
-    time.sleep(0.02)
+      return None
 
 if __name__ == '__main__':
   print('for local testing read 100 touch readings from port 1')
@@ -36,7 +42,7 @@ if __name__ == '__main__':
 
   for i in range(100):
     case, val = goless.select([goless.rcase(readings)])
-    print(val)
+    print(case, val)
 
   print('100 reading are done, time to clean and exit')
   brick.reset_all()
