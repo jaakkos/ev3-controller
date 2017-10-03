@@ -6,8 +6,6 @@ if platform == "linux" or platform == "linux2":
 
 def start_infrared_sensor(brick, port, channel):
   print("start infrared sensor")
-  brick.reset_all()
-  time.sleep(0.25)
   setup_sensor(brick, port)
   goless.go(run_infrared_sensor, brick, port, channel)
   print("infrared sensor started")
@@ -40,6 +38,7 @@ def read_sensor(brick, port, sensor_type):
     time.sleep(0.01)
     return brick.get_sensor(port)
   except brickpi3.SensorError as error:
+    print("error infrared", error)
     return None
 
 if __name__ == '__main__':

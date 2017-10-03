@@ -6,8 +6,6 @@ if platform == "linux" or platform == "linux2":
 
 def start_touch_sensor(brick, port, channel):
   print("start touch sensor")
-  brick.reset_all()
-  time.sleep(0.25)
   setup_sensor(brick, port)
   goless.go(run_touch_sensor, brick, port, channel)
   print("touch sensor started")
@@ -27,9 +25,10 @@ def run_touch_sensor(brick, port, channel):
   while True:
     try:
       sensor_value = brick.get_sensor(port)
-      time.sleep(0.01)
+      time.sleep(0.5)
       channel.send(sensor_value)
     except brickpi3.SensorError as error:
+      print("error touch", error)
       return None
 
 if __name__ == '__main__':

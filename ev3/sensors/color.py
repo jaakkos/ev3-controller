@@ -6,8 +6,6 @@ if platform == "linux" or platform == "linux2":
 
 def start_color_sensor(brick, port, channel):
   print("start color sensor")
-  brick.reset_all()
-  time.sleep(0.250)
   setup_sensor(brick, port)
   goless.go(run_color_sensor, brick, port, channel)
   print("color sensor started")
@@ -42,6 +40,7 @@ def read_sensor(brick, port, sensor_type):
     time.sleep(0.01)
     return brick.get_sensor(port)
   except brickpi3.SensorError as error:
+    print("error color", error)
     return None
 
 if __name__ == '__main__':
