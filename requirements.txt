@@ -5,3 +5,5 @@ gevent
 goless
 nose
 sphinx
+six==1.9
+redis
