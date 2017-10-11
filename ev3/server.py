@@ -22,6 +22,8 @@ infrared_sensor_thread = None
 thread_lock = Lock()
 brick = brickpi3.BrickPi3()
 
+sensor_ports = [brick.PORT_1, brick.PORT_2, brick.PORT_3, brick.PORT_4]
+motor_ports = [brick.PORT_A, brick.PORT_B, brick.PORT_C, brick.PORT_D]
 ports = {
     1: brick.PORT_1,
     2: brick.PORT_2,
@@ -83,6 +85,7 @@ def robot_connect():
 @socketio.on('disconnect')
 def robot_disconnect():
     print('client disconnected')
+    brick.reset_all()
 
 
 @socketio.on('ping')
@@ -93,7 +96,7 @@ def ping_pong():
 @socketio.on('start_touch_sensor')
 def start_touch_sensor_thread(message):
     port = ports[message['port']]
-    if port is None:
+    if port not in sensor_ports:
         emit('error', {'data': 'invalid port for touch sensor: ' + message['port']})
     else:
         global touch_sensor_thread
@@ -106,7 +109,7 @@ def start_touch_sensor_thread(message):
 @socketio.on('start_color_sensor')
 def start_color_sensor_thread(message):
     port = ports[message['port']]
-    if port is None:
+    if port not in sensor_ports:
         emit('error', {'data': 'invalid port for color sensor: ' + message['port']})
     else:
         global color_sensor_thread
@@ -119,7 +122,7 @@ def start_color_sensor_thread(message):
 @socketio.on('start_infrared_sensor')
 def start_infrared_sensor_thread(message):
     port = ports[message['port']]
-    if port is None:
+    if port not in sensor_ports:
         emit('error', {'data': 'invalid port for infrared sensor: ' + message['port']})
     else:
         global infrared_sensor_thread
@@ -128,6 +131,18 @@ def start_infrared_sensor_thread(message):
                 infrared_sensor_thread = socketio.start_background_task(target=read_infrared_sensor, port=port)
         emit('infrared_sensor_started', {'data': True})
 
+@socketio.on('set_motor_speed')
+def set_motor_power(message):
+    port = ports[message['port']]
+    speed = message['speed']
+    if port not in motor_ports:
+        emit('error', {'data': 'invalid port for motor: ' + message['port']})
+    elif speed > 100 or speed < -100:
+        emit('error', {'data': 'invalid motor power: ' + message['power']})
+    else:
+        brick.set_motor_power(port, speed)
+        motor_encoder = brick.get_motor_encoder(port)
+        emit('motor_speed_set', {'data': motor_encoder})
 
 if __name__ == '__main__':
     print('starting socket-io server')
