@@ -1,12 +1,6 @@
-Sample Module Repository
+EV3 controller
 ========================
+Socket IO server for BrickPi3
 
-This simple project is an example repo for Python projects.
-
-`Learn more <http://www.kennethreitz.org/essays/repository-structure-and-python>`_.
-
----------------
-
-If you want to learn more about ``setup.py`` files, check out `this repository <https://github.com/kennethreitz/setup.py>`_.
-
-✨🍰✨
+1. Install requirements `make init`
+2. Start server `./bin/ws-server`
