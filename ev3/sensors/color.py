@@ -26,10 +26,11 @@ def setup_sensor(brick, port):
 
 
 def run_color_sensor(brick, port, channel):
-    sensor_modes = [(brick.SENSOR_TYPE.EV3_COLOR_REFLECTED, 'reflect'),
-                    (brick.SENSOR_TYPE.EV3_COLOR_AMBIENT, 'ambiet'),
-                    (brick.SENSOR_TYPE.EV3_COLOR_COLOR, 'color'),
-                    (brick.SENSOR_TYPE.EV3_COLOR_COLOR_COMPONENTS, 'color_components')]
+    # sensor_modes = [(brick.SENSOR_TYPE.EV3_COLOR_REFLECTED, 'reflect'),
+    #                 (brick.SENSOR_TYPE.EV3_COLOR_AMBIENT, 'ambiet'),
+    #                 (brick.SENSOR_TYPE.EV3_COLOR_COLOR, 'color'),
+    #                 (brick.SENSOR_TYPE.EV3_COLOR_COLOR_COMPONENTS, 'color_components')]
+    sensor_modes = [(brick.SENSOR_TYPE.EV3_COLOR_COLOR, 'color')]
 
     while True:
         for sensor_mode in sensor_modes:
