@@ -29,11 +29,12 @@ def run_touch_sensor(brick, port, channel):
     while True:
         try:
             sensor_value = brick.get_sensor(port)
-            time.sleep(0.5)
+            time.sleep(0.01)
             channel.send(sensor_value)
         except brickpi3.SensorError as error:
             print("error touch", error)
-            return None
+            channel.send(error)
+            break
 
 
 if __name__ == '__main__':

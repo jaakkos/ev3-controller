@@ -36,6 +36,8 @@ def run_infrared_sensor(brick, port, channel):
             sensor_value = read_sensor(brick, port, sensor_mode[0])
             if sensor_value:
                 channel.send((sensor_mode[1], sensor_value))
+                if isinstance(sensor_value, brickpi3.SensorError):
+                    break
 
 
 def read_sensor(brick, port, sensor_type):
@@ -45,7 +47,7 @@ def read_sensor(brick, port, sensor_type):
         return brick.get_sensor(port)
     except brickpi3.SensorError as error:
         print("error infrared", error)
-        return None
+        return error
 
 
 if __name__ == '__main__':

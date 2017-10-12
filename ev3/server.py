@@ -35,11 +35,15 @@ def read_touch_sensor(port):
     start_touch_sensor(brick, port, touch_readings)
     while True:
         value = touch_readings.recv()
+        if isinstance(value, brickpi3.SensorError):
+            socketio.emit('error', {'message': 'error in touch sensor', 'error': str(value)})
+            break
+
         message_type = 'touch'
         message_data = {'data': value}
         socketio.emit(message_type, message_data)
         print('emitted', message_type, message_data)
-        socketio.sleep(0.2)
+        socketio.sleep(0.05)
 
 
 def read_color_sensor(port):
@@ -47,11 +51,15 @@ def read_color_sensor(port):
     start_color_sensor(brick, port, color_readings)
     while True:
         value = color_readings.recv()
+        if isinstance(value, brickpi3.SensorError):
+            socketio.emit('error', {'message': 'error in color sensor', 'error': str(value)})
+            break
+
         message_type = 'color_' + value[0]
         message_data = {'data': value[1]}
         socketio.emit(message_type, message_data)
         print('emitted', message_type, message_data)
-        socketio.sleep(0.2)
+        socketio.sleep(0.05)
 
 
 def read_infrared_sensor(port):
@@ -59,11 +67,15 @@ def read_infrared_sensor(port):
     start_infrared_sensor(brick, port, infrared_readings)
     while True:
         value = infrared_readings.recv()
+        if isinstance(value, brickpi3.SensorError):
+            socketio.emit('error', {'message': 'error in infrared sensor', 'error': str(value)})
+            break
+
         message_type = 'infrared_' + value[0]
         message_data = {'data': value[1]}
         socketio.emit(message_type, message_data)
         print('emitted', message_type, message_data)
-        socketio.sleep(0.2)
+        socketio.sleep(0.05)
 
 
 @app.route('/')
