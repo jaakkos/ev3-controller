@@ -10,7 +10,7 @@ sphinx = "*"
 
 [packages]
 
-flask = "==0.12.2"
+flask = "==1.0"
 "flask-socketio" = "==2.9.2"
 goless = "==0.7.2"
 gevent = "==1.2.2"
